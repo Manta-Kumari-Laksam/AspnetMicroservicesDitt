@@ -12,24 +12,26 @@ namespace Ordering.Infrastructure.Persistence
         public OrderContext(DbContextOptions<OrderContext> options) : base(options)
         {
         }
+
         public DbSet<Order> Orders { get; set; }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            foreach(var entry in ChangeTracker.Entries<EntityBase>())
+            foreach (var entry in ChangeTracker.Entries<EntityBase>())
             {
-                switch(entry.State)
+                switch (entry.State)
                 {
                     case EntityState.Added:
                         entry.Entity.CreatedDate = DateTime.Now;
-                        entry.Entity.CreatedBy = "manta";
+                        entry.Entity.CreatedBy = "swn";
                         break;
                     case EntityState.Modified:
                         entry.Entity.LastModifiedDate = DateTime.Now;
-                        entry.Entity.LastModifiedBy = "manta";
+                        entry.Entity.LastModifiedBy = "swn";
                         break;
                 }
             }
+
             return base.SaveChangesAsync(cancellationToken);
         }
     }
